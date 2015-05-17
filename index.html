@@ -907,20 +907,29 @@
 
       // Parse Google Spreadsheet URL.
 
-      function parseSheet(str) {
 
-        // var url = trim(str).match(\/d\/([^\&\#]+)(#gid=([0-9]+))?\/) || [];
-        var key = trim(str).match(/[A-z0-9\-\=]+/) || [];
-            key = url[1] || key[0];
 
-        if(key) {
-          var slug = 'https://docs.google.com/spreadsheet/ccc?key=';
-          config.spreadsheet.url = slug + key + '#gid=' + (url[3] || '82');
-        }
+    function parseSheet(str) {
+      var parserURL = str;
+      var parser = document.createElement('a'),
+      searchObject = {},
+      queries, split, i;
+    
+    // Let the browser do the work
+    parser.href = parserURL;
+    // Convert query string to object
+    queries = parser.search.replace(/^\?/, '').split('&');
+    
+    for( i = 0; i < queries.length; i++ ) {
+        split = queries[i].split('=');
+        searchObject[split[0]] = split[1];
+    }
+    
+    test = parser.pathname.split('/')
+    return test[3];
+    
+    }
 
-        return key;
-
-      }
 
 
       // parseUri 1.2.2
